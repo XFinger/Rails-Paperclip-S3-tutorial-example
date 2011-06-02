@@ -1,0 +1,41 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: affine_transform.rb</title>
+</head>
+
+<body>
+<h1>affine_transform.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>#! /usr/local/bin/ruby -w
+require 'RMagick'
+
+# Demonstrate the Image#affine_transform method
+
+img = Magick::Image.read("images/Flower_Hat.jpg").first
+
+# Construct a simple affine matrix
+flipflop = Magick::AffineMatrix.new(1, Math::PI/6, Math::PI/6, 1, 0, 0)
+
+# Apply the transform
+img = img.affine_transform(flipflop)
+
+# Scale the image, make the background transparent,
+# and write it to a JPEG file.
+img.scale!(250.0/img.rows)
+img = img.matte_replace(0,0)
+img.write("affine_transform.jpg")
+
+exit
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

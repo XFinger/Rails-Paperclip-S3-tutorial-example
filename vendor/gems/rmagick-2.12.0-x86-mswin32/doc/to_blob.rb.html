@@ -1,0 +1,35 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: to_blob.rb</title>
+</head>
+
+<body>
+<h1>to_blob.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>#! /usr/local/bin/ruby -w
+require 'RMagick'
+
+before = Magick::Image.read("images/Flower_Hat.jpg").first
+before.resize!(0.50)  # make it small so this example will run fast
+
+blob = before.to_blob
+# We could pass the format, depth, and geometry as optional
+# arguments to `from_blob' but that is not required.
+after = Magick::Image.from_blob(blob)
+
+after[0].write("to_blob.gif")
+exit
+
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

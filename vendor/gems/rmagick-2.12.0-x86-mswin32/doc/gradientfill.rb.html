@@ -1,0 +1,48 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: gradientfill.rb</title>
+</head>
+
+<body>
+<h1>gradientfill.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>#! /usr/local/bin/ruby -w
+require 'RMagick'
+
+# Demonstrate the GradientFill class
+
+Rows = 100
+Cols = 300
+
+Start = "#900"
+End = "#000"
+
+fill = Magick::GradientFill.new(0, 0, 0, Rows, Start, End)
+img = Magick::Image.new(Cols, Rows, fill);
+
+# Annotate the filled image with the code that created the fill.
+
+ann = Magick::Draw.new
+ann.annotate(img, 0,0,0,0, "GradientFill.new(0, 0, 0, #{Rows}, '#{Start}', '#{End}')") {
+    self.gravity = Magick::CenterGravity
+    self.fill = 'white'
+    self.stroke = 'transparent'
+    self.pointsize = 14
+    }
+
+#img.display
+img.write("gradientfill.gif")
+exit
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

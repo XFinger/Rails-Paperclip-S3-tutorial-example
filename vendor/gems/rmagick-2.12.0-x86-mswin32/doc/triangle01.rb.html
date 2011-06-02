@@ -1,0 +1,37 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: triangle01.rb</title>
+</head>
+
+<body>
+<h1>triangle01.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>require 'rvg/rvg'
+
+Magick::RVG.dpi = 90
+
+rvg = Magick::RVG.new(4.cm, 4.cm).viewbox(0, 0, 400, 400) do |canvas|
+    canvas.title = "Example triangle01 - simple example of a 'path'"
+    canvas.desc = 'A path that draws a triangle'
+
+    canvas.background_fill = 'white'
+    canvas.rect(395, 395, 1, 1).styles(:fill=&gt;'none', :stroke=&gt;'blue')
+
+    canvas.path('M 100 100 L 300 100 L 200 300 z').styles(:fill=&gt;'red', :stroke=&gt;'blue', :stroke_width=&gt;3)
+end
+
+rvg.draw.write('triangle01.gif')
+
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: resize_to_fit.rb</title>
+</head>
+
+<body>
+<h1>resize_to_fit.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>#!/usr/local/bin/ruby -w
+require 'RMagick'
+
+# Demonstrate the crop_resize method
+
+img = Magick::Image.read('images/Flower_Hat.jpg')[0]
+thumbnail = img.resize_to_fit(76, 76)
+thumbnail.write("resize_to_fit.jpg")
+
+
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

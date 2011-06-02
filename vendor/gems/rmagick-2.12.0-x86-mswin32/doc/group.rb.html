@@ -1,0 +1,47 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: group.rb</title>
+</head>
+
+<body>
+<h1>group.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>require 'rvg/rvg'
+
+Magick::RVG.dpi = 90
+
+rvg = Magick::RVG.new(6.cm, 4.cm).viewbox(0,0,600,400) do |canvas|
+    canvas.background_fill = 'white'
+    canvas.rect(595,395,1,1).styles(:stroke=&gt;'blue', :fill=&gt;'none', :stroke_width=&gt;2)
+
+    # Define a stick figure.
+    stick = Magick::RVG::Group.new.styles(:stroke=&gt;'black', :fill=&gt;'none', :stroke_width=&gt;6) do |fig|
+        fig.circle(42, 50, 50).styles(:stroke=&gt;'red')
+        fig.polyline(30,40, 50,40, 45,60, 50,40, 65,40).styles(:stroke_width=&gt;4)
+        fig.polyline(10,100, 50,130, 90,100)
+        fig.line(50,97, 50, 155)
+        fig.polyline(10,200, 50,155, 90,200)
+    end
+
+    # Draw 12 copies.
+    2.times {|y|
+        6.times {|x|
+            canvas.use(stick, x*100, y*200)
+        }
+    }
+end
+
+rvg.draw.write('group.gif')
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

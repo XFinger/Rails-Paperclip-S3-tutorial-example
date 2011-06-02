@@ -1,0 +1,67 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: crop_with_gravity.rb</title>
+</head>
+
+<body>
+<h1>crop_with_gravity.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>#! /usr/local/bin/ruby -w
+
+#=======================================================#
+# Thanks to Robert Wagner for the idea of allowing a    #
+# GravityType instead of the x- and y-offset arguments! #
+#=======================================================#
+
+# Demo the use of the GravityType argument to Image#crop.
+
+require 'RMagick'
+include Magick
+
+shorts = Image.read('images/Shorts.jpg').first
+
+regwidth = shorts.columns/2
+regheight = shorts.rows/2
+
+mask = Image.new(regwidth, regheight) { self.background_color = 'white'}
+mask.opacity = 0.50 * TransparentOpacity
+
+black = Image.new(shorts.columns, shorts.rows) {self.background_color = 'black'}
+pairs = ImageList.new
+
+[NorthWestGravity, NorthGravity, NorthEastGravity,
+ WestGravity, CenterGravity, EastGravity,
+ SouthWestGravity, SouthGravity, SouthEastGravity].each do |gravity|
+    pattern = shorts.composite(mask, gravity, OverCompositeOp)
+    cropped = shorts.crop(gravity, regwidth, regheight)
+    result = black.composite(cropped, gravity, OverCompositeOp)
+    result.border_color = "white"
+    pairs &lt;&lt; pattern
+    pairs &lt;&lt; result
+end
+
+# Montage into a single image
+montage = pairs.montage {
+    self.geometry = "#{pairs.columns}x#{pairs.rows}+0+0"
+    self.tile = "6x3"
+    self.border_width = 1
+    }
+montage.write('crop_with_gravity.miff')
+#montage.display
+
+
+
+
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

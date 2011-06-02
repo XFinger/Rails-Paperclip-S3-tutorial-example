@@ -1,0 +1,44 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: InitialCoords.rb</title>
+</head>
+
+<body>
+<h1>InitialCoords.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>require 'rvg/rvg'
+
+rvg = Magick::RVG.new(300, 100) do |canvas|
+    canvas.desc = "Example InitialCoords - SVG's initial coordinate system"
+    canvas.background_fill = 'white'
+    canvas.g.styles(:fill=&gt;'none', :stroke=&gt;'black', :stroke_width=&gt;3) do |grp|
+        grp.line(0, 1.5, 300, 1.5)
+        grp.line(1.5, 0, 1.5, 100)
+    end
+    canvas.g.styles(:fill=&gt;'red', :stroke=&gt;'none') do |grp|
+        grp.rect(3, 3)
+        grp.rect(3, 3, 297,  0)
+        grp.rect(3, 3,   0, 97)
+    end
+    canvas.g.styles(:font_size=&gt;14, :font_family=&gt;'Verdana', :font_weight=&gt;'normal', :font_style=&gt;'normal') do |grp|
+        grp.text(10, 20, '(0,0)')
+        grp.text(240, 20, '(300,0)')
+        grp.text(10, 90, '(0,100)')
+    end
+end
+
+rvg.draw.write('InitialCoords.gif')
+
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

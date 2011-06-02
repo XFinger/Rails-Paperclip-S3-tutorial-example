@@ -1,0 +1,82 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: arcs02.rb</title>
+</head>
+
+<body>
+<h1>arcs02.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>require 'rvg/rvg'
+
+Magick::RVG.dpi = 90
+
+PathStyles = {:fill=&gt;'none', :stroke=&gt;'red', :stroke_width=&gt;6}
+BaseEllipsesStyles = {:font_size=&gt;20, :font_family=&gt;'Verdana',:fill=&gt;'none', :stroke=&gt;'#888', :stroke_width=&gt;2}
+
+rvg = Magick::RVG.new(12.cm, (5.25).cm).viewbox(0, 0, 1200, 525) do |canvas|
+    canvas.title = "Example arcs02 - arc options in paths"
+    canvas.desc = &lt;&lt;-END_DESC
+        Pictures showing the result of setting
+        large-arc-flag and sweep-flag to the four
+        possible combinations of 0 and 1.
+    END_DESC
+    canvas.background_fill = 'white'
+
+    base_ellipses = Magick::RVG::Group.new.styles(BaseEllipsesStyles) do |base|
+        base.ellipse(100, 50, 125, 125)
+        base.ellipse(100, 50, 225, 75)
+        base.text(35, 70, "Arc start")
+        base.text(225, 145, "Arc end")
+    end
+
+    canvas.rect(1196, 522, 1, 1).styles(:fill=&gt;'none', :stroke=&gt;'blue', :stroke_width=&gt;1)
+
+    canvas.g.styles(:font_size=&gt;30, :font_family=&gt;'Verdana', :font_weight=&gt;'normal', :font_style=&gt;'normal') do |grp|
+
+        grp.use(base_ellipses)
+
+        grp.g.translate(400,0) do |grp2|
+            grp2.text(50, 210, 'large-arc-flag=0')
+            grp2.text(50, 250, 'sweep-flag=0')
+            grp2.use(base_ellipses)
+            grp2.path("M 125,75 a100,50 0 0,0 100,50").styles(PathStyles)
+        end
+
+        grp.g.translate(800,0) do |grp2|
+            grp2.text(50, 210, 'large-arc-flag=0')
+            grp2.text(50, 250, 'sweep-flag=1')
+            grp2.use(base_ellipses)
+            grp2.path("M 125,75 a100,50 0 0,1 100,50").styles(PathStyles)
+        end
+
+        grp.g.translate(400, 250) do |grp2|
+            grp2.text(50, 210, 'large-arc-flag=1')
+            grp2.text(50, 250, 'sweep-flag=0')
+            grp2.use(base_ellipses)
+            grp2.path("M 125,75 a100,50 0 1,0 100,50").styles(PathStyles)
+        end
+
+        grp.g.translate(800, 250) do |grp2|
+            grp2.text(50, 210, 'large-arc-flag=1')
+            grp2.text(50, 250, 'sweep-flag=1')
+            grp2.use(base_ellipses)
+            grp2.path("M 125,75 a100,50 0 1,1 100,50").styles(PathStyles)
+        end
+
+    end
+end
+
+rvg.draw.write('arcs02.gif')
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

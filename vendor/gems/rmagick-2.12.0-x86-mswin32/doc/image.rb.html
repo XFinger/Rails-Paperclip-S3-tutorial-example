@@ -1,0 +1,67 @@
+<!DOCTYPE public PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="ex2html.rb" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <link rel="stylesheet" type="text/css" href="css/popup.css" />
+
+  <title>RMagick example: image.rb</title>
+</head>
+
+<body>
+<h1>image.rb</h1>
+<div class="bodybox">
+<div class="bodyfloat">
+<pre>require 'rvg/rvg'
+
+rvg = Magick::RVG.new(525, 270) do |canvas|
+    canvas.background_fill = 'white'
+    canvas.rect(524, 269).styles(:fill=&gt;'none', :stroke=&gt;'blue', :stroke_width=&gt;1)
+
+    hat = ::Magick::Image.read('images/Flower_Hat.jpg').first
+
+    canvas.image(hat, 100, 75, 25, 40).preserve_aspect_ratio('none')
+    canvas.rect(100, 75, 25, 40).styles(:fill =&gt; 'none', :stroke =&gt; 'blue')
+
+    canvas.image(hat, 100, 75, 150, 40).preserve_aspect_ratio('xMinYMin', 'meet')
+    canvas.rect(100, 75, 150, 40).styles(:fill =&gt; 'none', :stroke =&gt; 'blue')
+
+    canvas.image(hat, 100, 75, 275, 40).preserve_aspect_ratio('xMidYMid', 'meet')
+    canvas.rect(100, 75, 275, 40).styles(:fill =&gt; 'none', :stroke =&gt; 'blue')
+
+    canvas.image(hat, 100, 75, 400, 40).preserve_aspect_ratio('xMaxYMax', 'meet')
+    canvas.rect(100, 75, 400, 40).styles(:fill =&gt; 'none', :stroke =&gt; 'blue')
+
+    canvas.image(hat, 100, 75, 150, 155).preserve_aspect_ratio('xMinYMin', 'slice')
+    canvas.rect(100, 75, 150, 155).styles(:fill =&gt; 'none', :stroke =&gt; 'blue')
+
+    canvas.image(hat, 100, 75, 275, 155).preserve_aspect_ratio('xMidYMid', 'slice')
+    canvas.rect(100, 75, 275, 155).styles(:fill =&gt; 'none', :stroke =&gt; 'blue')
+
+    canvas.image(hat, 100, 75, 400, 155).preserve_aspect_ratio('xMaxYMax', 'slice')
+    canvas.rect(100, 75, 400, 155).styles(:fill =&gt; 'none', :stroke =&gt; 'blue')
+
+    canvas.line(150, 20, 305, 20)
+    canvas.line(345, 20, 500, 20)
+    canvas.line(150, 250, 305, 250)
+    canvas.line(340, 250, 500, 250)
+    canvas.g.styles(:stroke=&gt;'none', :font_weight=&gt;'normal', :font_style=&gt;'normal') do |t|
+        t.text(310, 23, 'meet')
+        t.text(60, 140, 'none')
+        t.text(170, 140, 'xMinYMin')
+        t.text(300, 140, 'xMidYMid')
+        t.text(425, 140, 'xMaxYMax')
+        t.text(310, 253, 'slice')
+    end
+
+end
+
+rvg.draw.write('image.gif')
+
+</pre>
+</div>
+</div>
+<div id="close"><a href="javascript:window.close();">Close window</a></div>
+</body>
+</html>

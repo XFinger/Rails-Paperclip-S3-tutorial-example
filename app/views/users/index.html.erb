@@ -1,0 +1,21 @@
+<h1>Listing users</h1>
+
+<table>
+
+<% @users.each do |user| %>
+ 
+ <p><%=h user.name %> </p>
+ <%=h image_tag user.avatar.url %>
+ <%=h image_tag user.avatar.url(:thumb) %>
+  <br />
+ 
+ <%= link_to 'Show', user %> | 
+     <%= link_to 'Edit', edit_user_path(user) %> | 
+    <%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %> 
+<br />   
+<% end %>
+ 
+<br />
+<br />
+
+<%= link_to 'New user', new_user_path %>

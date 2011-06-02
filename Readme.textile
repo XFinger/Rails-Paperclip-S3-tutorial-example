@@ -1,0 +1,113 @@
+h1. Rails Paperclip S3 Example/Tutorial
+
+An easy guide to image attachments using paperclip and Amazon Simple Storage Service (Amazon S3). Includes example files.
+
+h3. Prerequisites
+
+* "Imagemagick":http://rmagick.rubyforge.org/install-faq.html and the RMagick gem both need to be installed and configured for your system.
+* If you want to use the local file system for storage, you can skip the next three prerequisites and use the alternate code in */models/user.rb*.
+* You need to sign up with "Amazon Simple Storage Service (Amazon S3)":http://aws.amazon.com/s3/ 
+* Amazon will provide you with the necessary security credentials: *access_key_id* and *secret_access_key*.
+* You need to set up an amazon bucket for your storage.
+
+h3. Get Started
+This tutorial assumes that you are setting up attachments on your user model. You can alter it to attach images to any model you like.
+
+* Add these lines to */config/environment.rb*
+
+bq.	config.gem "paperclip", :version => "~> 2.3"
+	config.gem "aws-s3", :version => ">= 0.6.2", :lib => "aws/s3"  (ignore if you are using local storage).
+ 	config.gem "rmagick", :lib => "RMagick2"
+    require 'RMagick' (at the very end of environment.rb)
+	
+* rake gems:install
+
+* Generate a migration:
+
+bq. script/generate paperclip user avatar ( User is the model and avatar is the attachment name )
+
+* rake db:migrate
+
+* set up your user model: *(S3 storage)*
+
+bq.	attr_accessible :avatar, :avatar_file_name	
+    validates_attachment_presence :avatar *leave line out if you prefer having a default image when none is attached*
+	validates_attachment_size :avatar, :less_than => 3.megabytes    	
+
+bq.	has_attached_file :avatar,
+ 	:styles => {:thumb => {:geometry => '75x75>', :format => :jpg},
+	:original => {:geometry => '180x180>', :format => :jpg}},
+ 	:storage => :s3,
+ 	:s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+ 	:path => ":attachment/:id/:style.:extension",
+ 	:bucket => *'Your Amazon S3 Bucket Name'*,
+ 	:default_url => '/images/missing_:style.jpg'
+
+* Or, set up your user model: *(local storage)*
+ 
+bq. attr_accessible :avatar, :avatar_file_name 
+ 	validates_attachment_presence :avatar  *leave line out if you prefer having a default image when none is attached*
+ 	validates_attachment_size :avatar, :less_than => 3.megabytes 
+
+bq.	has_attached_file :avatar,
+	:styles => {:thumb => {:geometry => '75x75>', :format => :jpg},
+	:original => {:geometry => '180x180>', :format => :jpg}},
+	:url => "/system/:attachment/:id/:style/:basename.:extension",  
+	:path => ":rails_root/public/system/:attachment/:id/:style/:basename.:extension",  
+	:default_url => '/images/missing_:style.jpg'   
+ 
+* You can set up as many styles/sizes as you need: 
+
+bq. medium => {:geometry => '100x100>', :format => :png}
+	giant => {:geometry => '600x800>', :format => :png}
+	
+bq.	The '>' symbol keeps the image from being modified when resizing, using a '#' symbol will centrally crop the image.
+	If you use *original* as one of your styles, the uploaded file will be resized. If you do not use this style, the original will be kept in the file system.
+
+bq. Optional: add default images to */public/images* named missing_style.format for every style you create. If no image is attached, paperclip will use these images. I have included some nice default photos of bananas in the example files.
+    Example default image names:
+
+bq. missing_original.jpg
+	missing_thumb.jpg
+	missing_giant.png
+ 
+* Create a new file in */config*,  name it *s3.yml* and add the following (from your Amazon account credenteals):
+ 
+bq.	access_key_id: Your Access Key Id
+	secret_access_key: Your Secret Access Key 
+	
+* Create a new file in */config/initializers*, name it *paperclip.rb* and add the following:
+ 
+bq. require "paperclip"  
+ 	Paperclip.options[:command_path] = "/ImageMagick"
+ 
+* *The views*
+
+bq. *user/new.html.erb*
+<pre><% form_for (@user, :html => { :multipart => true}) do |f| %>
+    <%= f.error_messages %>
+    <%= f.label :avatar, 'Choose a photo:'%>
+    <%= f.file_field :avatar %>  
+    <%= f.submit 'Create' %>
+<% end %>
+</pre> 
+
+bq. *user/show.html.erb* 
+<pre>The original style:
+	<%=h image_tag @user.avatar.url %> 
+	The thumbnail style:     
+	<%=h image_tag @user.avatar.url(:thumb) %>	
+</pre> 
+ 
+* Fire up your server and test everything out.
+
+h3. Helpful Links
+
+* "Thoughtbot paperclip":https://github.com/thoughtbot/paperclip
+* "More paperclip documentation":http://rdoc.info/github/thoughtbot/paperclip 
+* "Amazon web services(S3)":http://aws.amazon.com/s3/ 
+* "Imagemagick / RMagick":http://rmagick.rubyforge.org/install-faq.html
+* "Railscasts":http://railscasts.com/episodes/134-paperclip - another good tutorial on Paperclip 
+
+
+

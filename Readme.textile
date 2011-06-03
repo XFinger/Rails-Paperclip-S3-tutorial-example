@@ -47,9 +47,9 @@ h4. Or, set up your user model: -- local storage
 
 bc. attr_accessible :avatar, :avatar_file_name
 validates_attachment_presence :avatar  -- leave line out if you prefer having a default image when none is attached 
-validates_attachment_size :avatar, :less_than => 3.megabytes 
+validates_attachment_size :avatar, :less_than => 3.megabytes
 
-bc.	has_attached_file :avatar,
+bc. _attached_file :avatar,
 :styles => {:thumb => {:geometry => '75x75>', :format => :jpg},
 :original => {:geometry => '180x180>', :format => :jpg}},
 :url => "/system/:attachment/:id/:style/:basename.:extension",  

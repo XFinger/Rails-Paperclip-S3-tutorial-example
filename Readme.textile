@@ -12,7 +12,8 @@ h3. Prerequisites
 
 h3. Get Started
 
-bc. This tutorial assumes that you are setting up attachments on your user model. You can alter it to attach images to any model you like.
+bc. This tutorial assumes that you are setting up attachments on your user model.
+You can alter it to attach images to any model you like.
 
 h4. Add these lines to  /config/environment.rb
 
@@ -31,7 +32,7 @@ h4. rake db:migrate
 h4. Set up your user model: -- S3 storage
 
 bc. attr_accessible :avatar, :avatar_file_name	
-validates_attachment_presence :avatar -- leave line out if you prefer having a default image when none is attached 
+validates_attachment_presence :avatar - leave out to use optional default images
 validates_attachment_size :avatar, :less_than => 3.megabytes    	
 
 bc. has_attached_file :avatar,
@@ -46,7 +47,7 @@ bc. has_attached_file :avatar,
 h4. Or, set up your user model: -- local storage 
 
 bc. attr_accessible :avatar, :avatar_file_name
-validates_attachment_presence :avatar  -- leave line out if you prefer having a default image when none is attached 
+validates_attachment_presence :avatar - leave out to use optional default images
 validates_attachment_size :avatar, :less_than => 3.megabytes
 
 bc. _attached_file :avatar,
@@ -61,11 +62,13 @@ h4. You can set up as many styles/sizes/formats as you need:
 bc. medium => {:geometry => '100x100>', :format => :png}
 giant => {:geometry => '600x800>', :format => :png}
 	
-bc. The '>' symbol keeps the image from being modified when resizing, using a '#' symbol will centrally crop the image.
-If you use original as one of your style names, the uploaded file will be resized. If you do not use this style, the original will be kept in the file system.
+bc. The '>' symbol keeps the image from being modified when resizing, using a '#' symbol will centrally
+crop the image. If you use original as one of your style names, the uploaded file will be resized. 
+If you do not use this style, the original will be kept in the file system.
 
-bc. Add default images to  /public/images   named missing_style.format for every style you create. If no image is attached, paperclip will use these images.
-I have included some nice default photos of bananas in the example files for your convenience.
+bc. Add default images to  /public/images   named missing_style.format for every style you create.
+If no image is attached, paperclip will use these images. I have included some nice default photos of
+bananas in the example files for your convenience.
 
 bc. Example default image names:
 missing_original.jpg
